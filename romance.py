@@ -2,8 +2,8 @@ import streamlit as st
 import datetime
 import base64
 
-# 1. CONFIGURACIÓN
-st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="wide")
+# 1. CONFIGURACIÓN DE PESTAÑA Y PÁGINA
+st.set_page_config(page_title="Mi Diario Especial", page_icon="📖", layout="wide")
 
 # 2. HORA COLOMBIA
 ahora_utc = datetime.datetime.utcnow()
@@ -24,7 +24,7 @@ try:
 except:
     fondo_img = ""
 
-# 4. ESTILOS (BOTÓN DENTRO DE LA CARTA)
+# 4. ESTILOS CSS PERSONALIZADOS
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
@@ -33,20 +33,28 @@ st.markdown(f"""
         background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
     }}
 
+    .header-diario {{
+        font-family: 'Dancing Script', cursive;
+        color: #d81b60;
+        font-size: 55px;
+        text-align: center;
+        padding: 20px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }}
+
     .main-container {{
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         gap: 30px;
-        padding: 20px;
-        min-height: 90vh;
+        padding: 10px;
     }}
 
     .foto-lado {{
         flex: 1;
         min-width: 300px;
-        max-width: 420px;
+        max-width: 400px;
         border-radius: 30px;
         box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         border: 4px solid white;
@@ -59,7 +67,7 @@ st.markdown(f"""
     .mensaje-lado {{
         flex: 1.2;
         min-width: 320px;
-        max-width: 520px;
+        max-width: 500px;
         background: white;
         padding: 35px;
         border-radius: 30px;
@@ -69,37 +77,41 @@ st.markdown(f"""
 
     @keyframes flotar {{
         0%, 100% {{ transform: translateY(0); }}
-        50% {{ transform: translateY(-12px); }}
+        50% {{ transform: translateY(-10px); }}
     }}
 
-    .titulo {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 48px; margin-bottom: 5px; }}
+    .titulo-carta {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 42px; margin-bottom: 5px; }}
     .fecha-badge {{ background: #d81b60; color: white; font-family: 'Quicksand', sans-serif; padding: 4px 15px; border-radius: 20px; font-size: 13px; display: inline-block; margin-bottom: 20px; }}
-    .texto-amor {{ font-family: 'Quicksand', sans-serif; font-size: 18px; color: #444; line-height: 1.5; margin-bottom: 10px; }}
-    .firma {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 32px; text-align: right; margin-bottom: 20px; }}
+    .texto-amor {{ font-family: 'Quicksand', sans-serif; font-size: 18px; color: #444; line-height: 1.5; margin-bottom: 10px; text-align: center; }}
+    .firma {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 32px; text-align: right; margin-bottom: 25px; }}
 
-    /* Estilo del botón de Streamlit para que parezca parte de la carta */
+    /* Estilo del botón */
     div.stButton > button {{
         background-color: #d81b60 !important;
         color: white !important;
-        border-radius: 20px !important;
+        border-radius: 25px !important;
         border: none !important;
-        padding: 8px 20px !important;
+        padding: 10px 30px !important;
         font-family: 'Quicksand', sans-serif !important;
         font-weight: 700 !important;
         width: 100%;
-        transition: 0.3s;
+        font-size: 16px !important;
+        box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
     }}
     
     div.stButton > button:hover {{
         background-color: #ad1457 !important;
-        transform: scale(1.02);
+        transform: translateY(-2px);
     }}
 
     header, footer {{ visibility: hidden; }}
     </style>
     """, unsafe_allow_html=True)
 
-# 5. MENSAJES (Los 30 mensajes están aquí)
+# 5. TÍTULO DE LA PÁGINA
+st.markdown('<div class="header-diario">🌸 MI DIARIO ESPECIAL 🌸</div>', unsafe_allow_html=True)
+
+# 6. MENSAJES (30 DÍAS)
 mensajes = {
     "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
     "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar.",
@@ -133,24 +145,28 @@ mensajes = {
     "19-05": "Carolina, hoy cerramos este primer ciclo de 30 días pensando en ti. Espero que te sientas muy valorada, porque tu esencia te hace única. Jhon te admira profundamente."
 }
 
-# 6. RENDERIZADO FINAL
+# 7. ESTRUCTURA DE LA PÁGINA
 llave = hoy.strftime("%d-%m")
 msg = mensajes.get(llave, "Carolina, eres una mujer excepcional.")
 
+# Abrimos el contenedor principal
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
+
+# Lado de la Foto
+st.markdown(f'<div class="foto-lado"><img src="{fondo_img}"></div>', unsafe_allow_html=True)
+
+# Lado del Mensaje
 st.markdown(f"""
-    <div class="main-container">
-        <div class="foto-lado">
-            <img src="{fondo_img}" alt="Carolina">
-        </div>
-        <div class="mensaje-lado">
-            <div class="titulo">Para Carolina ✨</div>
-            <div class="fecha-badge">{fecha_visual.upper()}</div>
-            <div class="texto-amor">"{msg}"</div>
-            <div class="firma">Con cariño, Jhon</div>
+    <div class="mensaje-lado">
+        <div class="titulo-carta">Para Carolina ✨</div>
+        <div class="fecha-badge">{fecha_visual.upper()}</div>
+        <div class="texto-amor">"{msg}"</div>
+        <div class="firma">Con cariño, Jhon</div>
 """, unsafe_allow_html=True)
 
-# El botón queda justo después de la firma, dentro de la misma columna visual
+# El botón vive AQUÍ, justo debajo de la firma, dentro del cuadro blanco
 if st.button("💖 Confirmar lectura"):
     st.balloons()
 
+# Cerramos los divs
 st.markdown('</div></div>', unsafe_allow_html=True)
