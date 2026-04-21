@@ -24,7 +24,7 @@ try:
 except:
     fondo_img = ""
 
-# 4. ESTILOS (DISEÑO DIVIDIDO)
+# 4. ESTILOS (BOTÓN DENTRO DE LA CARTA)
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
@@ -38,53 +38,68 @@ st.markdown(f"""
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 20px;
+        gap: 30px;
         padding: 20px;
-        min-height: 80vh;
+        min-height: 90vh;
     }}
 
     .foto-lado {{
         flex: 1;
         min-width: 300px;
-        max-width: 450px;
+        max-width: 420px;
         border-radius: 30px;
         box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        border: 5px solid white;
+        border: 4px solid white;
         overflow: hidden;
         animation: flotar 4s ease-in-out infinite;
     }}
 
-    .foto-lado img {{
-        width: 100%;
-        display: block;
-    }}
+    .foto-lado img {{ width: 100%; display: block; }}
 
     .mensaje-lado {{
         flex: 1.2;
         min-width: 320px;
-        max-width: 550px;
+        max-width: 520px;
         background: white;
-        padding: 40px;
+        padding: 35px;
         border-radius: 30px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        position: relative;
+        text-align: center;
     }}
 
     @keyframes flotar {{
         0%, 100% {{ transform: translateY(0); }}
-        50% {{ transform: translateY(-15px); }}
+        50% {{ transform: translateY(-12px); }}
     }}
 
-    .titulo {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 50px; text-align: center; margin-top: 0; }}
-    .fecha-badge {{ background: #d81b60; color: white; font-family: 'Quicksand', sans-serif; padding: 5px 15px; border-radius: 20px; font-size: 14px; text-align: center; width: fit-content; margin: 0 auto 20px auto; }}
-    .texto-amor {{ font-family: 'Quicksand', sans-serif; font-size: 19px; color: #444; line-height: 1.6; text-align: center; }}
-    .firma {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 35px; text-align: right; margin-top: 20px; }}
+    .titulo {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 48px; margin-bottom: 5px; }}
+    .fecha-badge {{ background: #d81b60; color: white; font-family: 'Quicksand', sans-serif; padding: 4px 15px; border-radius: 20px; font-size: 13px; display: inline-block; margin-bottom: 20px; }}
+    .texto-amor {{ font-family: 'Quicksand', sans-serif; font-size: 18px; color: #444; line-height: 1.5; margin-bottom: 10px; }}
+    .firma {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 32px; text-align: right; margin-bottom: 20px; }}
+
+    /* Estilo del botón de Streamlit para que parezca parte de la carta */
+    div.stButton > button {{
+        background-color: #d81b60 !important;
+        color: white !important;
+        border-radius: 20px !important;
+        border: none !important;
+        padding: 8px 20px !important;
+        font-family: 'Quicksand', sans-serif !important;
+        font-weight: 700 !important;
+        width: 100%;
+        transition: 0.3s;
+    }}
+    
+    div.stButton > button:hover {{
+        background-color: #ad1457 !important;
+        transform: scale(1.02);
+    }}
 
     header, footer {{ visibility: hidden; }}
     </style>
     """, unsafe_allow_html=True)
 
-# 5. DICCIONARIO DE 30 MENSAJES
+# 5. MENSAJES (Los 30 mensajes están aquí)
 mensajes = {
     "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
     "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar.",
@@ -118,7 +133,7 @@ mensajes = {
     "19-05": "Carolina, hoy cerramos este primer ciclo de 30 días pensando en ti. Espero que te sientas muy valorada, porque tu esencia te hace única. Jhon te admira profundamente."
 }
 
-# 6. MOSTRAR CONTENIDO
+# 6. RENDERIZADO FINAL
 llave = hoy.strftime("%d-%m")
 msg = mensajes.get(llave, "Carolina, eres una mujer excepcional.")
 
@@ -132,10 +147,10 @@ st.markdown(f"""
             <div class="fecha-badge">{fecha_visual.upper()}</div>
             <div class="texto-amor">"{msg}"</div>
             <div class="firma">Con cariño, Jhon</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-st.write("")
+# El botón queda justo después de la firma, dentro de la misma columna visual
 if st.button("💖 Confirmar lectura"):
     st.balloons()
+
+st.markdown('</div></div>', unsafe_allow_html=True)
