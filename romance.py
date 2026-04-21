@@ -2,10 +2,12 @@ import streamlit as st
 import datetime
 
 # Configuración de la página
-st.set_page_config(page_title="Para Carolina", page_icon="✉️", layout="centered")
+st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="centered")
 
-# Lógica de Fechas
+# --- LÓGICA DE FECHA EXACTA ---
 hoy = datetime.datetime.now()
+# Forzamos la zona horaria o el ajuste si el servidor marca otro día
+# Pero con esta lógica estándar debería marcar Lunes 20 de Abril correctamente
 dias_semana = {
     "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", 
     "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo"
@@ -18,74 +20,78 @@ meses_anio = {
 
 dia_nombre = dias_semana.get(hoy.strftime('%A'))
 mes_nombre = meses_anio.get(hoy.strftime('%B'))
-fecha_completa = f"{dia_nombre}, {hoy.day} de {mes_nombre}"
+fecha_visual = f"{dia_nombre}, {hoy.day} de {mes_nombre}"
 
-# --- ESTILO VISUAL "SOBRE ELEGANTE" ---
+# --- DISEÑO COLORIDO Y DINÁMICO ---
 st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
     
     .stApp {{
-        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+        background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
     }}
     
-    .sobre {{
-        background-color: #ffffff;
-        padding: 50px;
-        border-radius: 15px;
-        border: 1px solid #bae6fd;
-        box-shadow: 0px 15px 35px rgba(0,0,0,0.1);
-        margin: 20px auto;
-        max-width: 700px;
+    .contenedor-carta {{
+        background: white;
+        padding: 40px;
+        border-radius: 30px;
+        border: 4px solid #ffd700;
+        box-shadow: 0px 20px 40px rgba(0,0,0,0.2);
+        margin-top: 30px;
         position: relative;
+        overflow: hidden;
     }}
 
-    .sello {{
+    .decoracion {{
         position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #38bdf8;
-        color: white;
-        padding: 8px 25px;
-        border-radius: 50px;
+        top: -10px;
+        right: -10px;
+        font-size: 50px;
+        opacity: 0.2;
+    }}
+    
+    .titulo-principal {{
+        font-family: 'Dancing Script', cursive;
+        color: #0077b6;
+        font-size: 45px;
+        text-align: center;
+        margin-bottom: 10px;
+    }}
+
+    .fecha-badge {{
+        background: #ffd700;
+        color: #003049;
+        font-family: 'Quicksand', sans-serif;
         font-weight: bold;
-        font-size: 14px;
+        text-align: center;
+        padding: 5px 20px;
+        border-radius: 50px;
+        width: fit-content;
+        margin: 0 auto 25px auto;
+        font-size: 16px;
         letter-spacing: 1px;
     }}
     
-    .fecha-txt {{ 
-        color: #0369a1; 
-        font-family: 'Arial'; 
-        font-size: 14px; 
-        font-weight: bold; 
-        letter-spacing: 2px;
-        text-align: center;
-        margin-bottom: 35px;
-        border-bottom: 1px solid #f1f5f9;
-        padding-bottom: 15px;
-    }}
-    
-    .mensaje-cuerpo {{ 
-        font-size: 19px; 
-        color: #1e293b; 
-        line-height: 1.9; 
-        font-family: 'Libre Baskerville', serif; 
+    .texto-mensaje {{ 
+        font-size: 20px; 
+        color: #2c3e50; 
+        line-height: 1.7; 
+        font-family: 'Quicksand', sans-serif; 
         text-align: justify;
+        padding: 10px;
     }}
     
-    .firma-especial {{ 
-        margin-top: 40px; 
+    .firma-jhon {{ 
+        margin-top: 30px; 
         text-align: right; 
-        color: #0284c7; 
-        font-family: 'Arial';
-        font-weight: bold;
-        font-size: 18px; 
+        color: #0077b6; 
+        font-family: 'Dancing Script', cursive;
+        font-size: 32px; 
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# --- DICCIONARIO COMPLETO DE 30 DÍAS (20 ABRIL - 19 MAYO) ---
+# --- BASE DE DATOS DE MENSAJES (20 ABR - 19 MAY) ---
 mensajes_diarios = {
     "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día también por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
     "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar donde estés.",
@@ -119,25 +125,27 @@ mensajes_diarios = {
     "19-05": "Carolina, hoy cerramos este ciclo de 30 días pensando en ti. Espero que te sientas valorada, porque tu esencia, tu mente y la dedicación que le pones a tu hija te hacen única. Jhon te tiene en un concepto de admiración total."
 }
 
+# Obtención del mensaje
 llave = hoy.strftime("%d-%m")
-contenido_final = mensajes_diarios.get(llave, f"Carolina, hoy {fecha_completa} te pienso y te recuerdo que tu inteligencia y tu belleza son una combinación única. Jhon admira profundamente la mujer que eres.")
+contenido_final = mensajes_diarios.get(llave, f"Carolina, hoy {fecha_visual} te pienso y te recuerdo que eres una mujer increíble. ¡Ten un día maravilloso!")
 
-# --- RENDERIZADO DE LA CARTA ---
+# --- RENDERIZADO ---
 st.markdown(f"""
-    <div class="sobre">
-        <div class="sello">PARA CAROLINA</div>
-        <div class="fecha-txt">{fecha_completa.upper()}</div>
-        <div class="mensaje-cuerpo">
+    <div class="contenedor-carta">
+        <div class="decoracion">✨</div>
+        <div class="titulo-principal">Para Carolina</div>
+        <div class="fecha-badge">{fecha_visual.upper()}</div>
+        <div class="texto-mensaje">
             {contenido_final}
         </div>
-        <div class="firma-especial">Con mucho cariño y respeto,<br>Jhon ✨</div>
+        <div class="firma-jhon">Con mucho cariño y respeto, Jhon</div>
     </div>
     """, unsafe_allow_html=True)
 
-# --- BOTÓN DE CONFIRMACIÓN DINÁMICO ---
+# --- BOTÓN DE INTERACCIÓN ---
 st.write("")
-if st.button(f"Confirmar lectura del {dia_nombre}"):
+if st.button(f"Haz clic para terminar tu {dia_nombre}"):
     st.balloons()
-    st.toast(f"¡Que tengas un excelente {dia_nombre}, Carolina!", icon='✨')
+    st.toast(f"¡Feliz {dia_nombre}, Carolina! ✨", icon='💖')
 
-st.markdown("<p style='text-align: center; color: #64748b; font-size: 11px; margin-top: 50px;'>Un rincón creado por Jhon para Carolina.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: white; font-size: 12px; margin-top: 30px;'>Hecho con cariño para Carolina.</p>", unsafe_allow_html=True)
