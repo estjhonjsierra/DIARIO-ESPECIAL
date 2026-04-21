@@ -2,94 +2,94 @@ import streamlit as st
 import datetime
 import base64
 
-# 1. CONFIGURACIÓN DE PÁGINA
-st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="centered")
+# 1. CONFIGURACIÓN
+st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="wide")
 
-# 2. HORA COLOMBIA (UTC-5)
+# 2. HORA COLOMBIA
 ahora_utc = datetime.datetime.utcnow()
-bogota_offset = datetime.timedelta(hours=-5)
-hoy = ahora_utc + bogota_offset
+hoy = ahora_utc + datetime.timedelta(hours=-5)
 
-dias_semana = {"Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo"}
-meses_anio = {"April": "Abril", "May": "Mayo", "June": "Junio", "July": "Julio", "August": "Agosto", "September": "Septiembre", "October": "Octubre", "November": "Noviembre", "December": "Diciembre"}
+dias = {"Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo"}
+meses = {"April": "Abril", "May": "Mayo", "June": "Junio", "July": "Julio", "August": "Agosto", "September": "Septiembre", "October": "Octubre", "November": "Noviembre", "December": "Diciembre"}
+fecha_visual = f"{dias.get(hoy.strftime('%A'))}, {hoy.day} de {meses.get(hoy.strftime('%B'))}"
 
-dia_nombre = dias_semana.get(hoy.strftime('%A'))
-fecha_visual = f"{dia_nombre}, {hoy.day} de {meses_anio.get(hoy.strftime('%B'))}"
-
-# 3. FUNCIÓN PARA LA IMAGEN (GitHub: fondo_carolina.jpg.png)
+# 3. IMAGEN DE FONDO
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
+        return base64.b64encode(f.read()).decode()
 
 try:
     bin_str = get_base64('fondo_carolina.jpg.png')
-    fondo_css = f"""
-    .stApp {{
-        background-image: url("data:image/png;base64,{bin_str}");
-        background-size: cover;
-        background-position: center 20%;
-        animation: zoom_suave 20s infinite alternate;
-    }}
-    """
+    fondo_img = f"data:image/png;base64,{bin_str}"
 except:
-    fondo_css = ".stApp { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }"
+    fondo_img = ""
 
-# 4. DISEÑO "VIDRIO" PARA INTEGRAR EL ROSTRO
+# 4. ESTILOS (DISEÑO DIVIDIDO)
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
     
-    {fondo_css}
-
-    @keyframes zoom_suave {{
-        0% {{ transform: scale(1); }}
-        100% {{ transform: scale(1.05); }}
+    .stApp {{
+        background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
     }}
 
-    .main .block-container {{
+    .main-container {{
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        gap: 20px;
+        padding: 20px;
+        min-height: 80vh;
     }}
 
-    .contenedor-carta {{
-        background: rgba(255, 255, 255, 0.65); /* Transparencia para ver el rostro */
-        backdrop-filter: blur(10px); /* Efecto vidrio esmerilado */
+    .foto-lado {{
+        flex: 1;
+        min-width: 300px;
+        max-width: 450px;
+        border-radius: 30px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        border: 5px solid white;
+        overflow: hidden;
+        animation: flotar 4s ease-in-out infinite;
+    }}
+
+    .foto-lado img {{
+        width: 100%;
+        display: block;
+    }}
+
+    .mensaje-lado {{
+        flex: 1.2;
+        min-width: 320px;
+        max-width: 550px;
+        background: white;
         padding: 40px;
         border-radius: 30px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0px 15px 35px rgba(0,0,0,0.2);
-        max-width: 600px;
-        margin: 0 auto;
-        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
     }}
-    
-    .titulo {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 50px; margin-bottom: 10px; text-shadow: 1px 1px 2px white; }}
-    .fecha-tag {{ background: rgba(216, 27, 96, 0.9); color: white; font-family: 'Quicksand', sans-serif; padding: 6px 20px; border-radius: 20px; font-size: 15px; display: inline-block; margin-bottom: 25px; }}
-    .texto-cuerpo {{ font-family: 'Quicksand', sans-serif; font-size: 20px; color: #1a1a1a; line-height: 1.6; font-weight: 600; text-shadow: 0px 0px 1px white; }}
-    .firma-jhon {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 38px; text-align: right; margin-top: 25px; }}
-    
+
+    @keyframes flotar {{
+        0%, 100% {{ transform: translateY(0); }}
+        50% {{ transform: translateY(-15px); }}
+    }}
+
+    .titulo {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 50px; text-align: center; margin-top: 0; }}
+    .fecha-badge {{ background: #d81b60; color: white; font-family: 'Quicksand', sans-serif; padding: 5px 15px; border-radius: 20px; font-size: 14px; text-align: center; width: fit-content; margin: 0 auto 20px auto; }}
+    .texto-amor {{ font-family: 'Quicksand', sans-serif; font-size: 19px; color: #444; line-height: 1.6; text-align: center; }}
+    .firma {{ font-family: 'Dancing Script', cursive; color: #d81b60; font-size: 35px; text-align: right; margin-top: 20px; }}
+
     header, footer {{ visibility: hidden; }}
-    
-    /* Estilo del botón para que no tape */
-    .stButton > button {{
-        background-color: #d81b60 !important;
-        color: white !important;
-        border-radius: 20px !important;
-        border: none !important;
-        padding: 10px 25px !important;
-    }}
     </style>
     """, unsafe_allow_html=True)
 
-# 5. MENSAJES AUTOMATIZADOS (30 DÍAS)
+# 5. DICCIONARIO DE 30 MENSAJES
 mensajes = {
-    "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional.",
-    "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida.",
-    "22-04": "Mitad de semana, Carolina. Es el momento perfecto para resaltar tu resiliencia. Tienes una fortaleza interna que te permite enfrentar los retos con calma. Admiro tu tenacidad y el amor infinito que le entregas a tu hija.",
-    "23-04": "Carolina, tu mirada proyecta una sabiduría que va mucho más allá de las palabras. Tienes un estilo propio y una autenticidad que te hace destacar. Hoy te pienso y reconozco el valor de tu esfuerzo diario.",
+    "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
+    "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar.",
+    "22-04": "Mitad de semana, Carolina. Es el momento perfecto para resaltar tu resiliencia. Tienes una fortaleza interna que te permite enfrentar los retos con calma. Admiro tu tenacidad y el amor infinito que le entregas a tu hija; esa dedicación es parte de lo que te hace tan especial.",
+    "23-04": "Carolina, tu mirada proyecta una sabiduría que va mucho más allá de las palabras. Tienes un estilo propio y una autenticidad que te hace destacar. Hoy te pienso y reconozco el valor de tu esfuerzo diario por construir un futuro hermoso.",
     "24-04": "¡Viernes! Un día para reconocer que tu energía transforma cualquier ambiente. Tienes un carisma genuino que se complementa con tu madurez. Eres de esas personas que dejan huella simplemente por ser consistentes.",
     "25-04": "Sábado. Hoy te pienso y quiero resaltar esa disciplina admirable que tienes, Carolina. Mientras muchos descansan, tú sigues adelante con tus responsabilidades. Tu hija tiene en ti el mejor ejemplo de constancia.",
     "26-04": "Domingo de reflexión. La verdadera distinción, Carolina, está en tu trato y en la profundidad de tus pensamientos. Admiro tu criterio y cómo defiendes tus valores. Eres una mujer de gran corazón.",
@@ -118,21 +118,24 @@ mensajes = {
     "19-05": "Carolina, hoy cerramos este primer ciclo de 30 días pensando en ti. Espero que te sientas muy valorada, porque tu esencia te hace única. Jhon te admira profundamente."
 }
 
-# 6. RENDERIZADO
+# 6. MOSTRAR CONTENIDO
 llave = hoy.strftime("%d-%m")
-mensaje_hoy = mensajes.get(llave, "Carolina, eres una mujer excepcional.")
+msg = mensajes.get(llave, "Carolina, eres una mujer excepcional.")
 
 st.markdown(f"""
-    <div class="contenedor-carta">
-        <div class="titulo">Para Carolina ✨</div>
-        <div class="fecha-tag">{fecha_visual.upper()}</div>
-        <div class="texto-cuerpo">"{mensaje_hoy}"</div>
-        <div class="firma-jhon">Con cariño,<br>Jhon</div>
+    <div class="main-container">
+        <div class="foto-lado">
+            <img src="{fondo_img}" alt="Carolina">
+        </div>
+        <div class="mensaje-lado">
+            <div class="titulo">Para Carolina ✨</div>
+            <div class="fecha-badge">{fecha_visual.upper()}</div>
+            <div class="texto-amor">"{msg}"</div>
+            <div class="firma">Con cariño, Jhon</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 st.write("")
-col1, col2, col3 = st.columns([1,2,1])
-with col2:
-    if st.button(f"💖 Confirmar lectura"):
-        st.balloons()
+if st.button("💖 Confirmar lectura"):
+    st.balloons()
