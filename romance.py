@@ -1,15 +1,15 @@
 import streamlit as st
 import datetime
 
-# Configuración de la página
+# 1. Configuración de la página
 st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="centered")
 
-# --- CORRECCIÓN DE HORA PARA COLOMBIA (UTC-5) ---
-# Esto evita que se pase al día siguiente antes de tiempo
+# 2. Corrección de Hora para Colombia (UTC-5)
 ahora_utc = datetime.datetime.utcnow()
 bogota_offset = datetime.timedelta(hours=-5)
 hoy = ahora_utc + bogota_offset
 
+# Traducción de fechas
 dias_semana = {
     "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", 
     "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo"
@@ -24,30 +24,59 @@ dia_nombre = dias_semana.get(hoy.strftime('%A'))
 mes_nombre = meses_anio.get(hoy.strftime('%B'))
 fecha_visual = f"{dia_nombre}, {hoy.day} de {mes_nombre}"
 
-# --- DISEÑO EXPLOSIVO Y ALEGRE ---
+# 3. Diseño Visual Premium con Sorpresas
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
     
+    /* Fondo con degradado animado */
     .stApp {{
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
     }}
-    
+
+    @keyframes gradient {{
+        0% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+        100% {{ background-position: 0% 50%; }}
+    }}
+
+    /* Contenedor de la carta con efecto de brillo */
     .contenedor-carta {{
-        background: rgba(255, 255, 255, 0.95);
-        padding: 40px;
-        border-radius: 35px;
-        border: 6px solid #ffffff;
-        box-shadow: 0px 20px 45px rgba(0,0,0,0.2);
+        background: rgba(255, 255, 255, 0.92);
+        padding: 50px;
+        border-radius: 30px;
+        border: 4px solid #ffffff;
+        box-shadow: 0px 15px 35px rgba(0,0,0,0.2);
         margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+    }}
+
+    .contenedor-carta::before {{
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        animation: rotate 10s linear infinite;
+    }}
+
+    @keyframes rotate {{
+        from {{ transform: rotate(0deg); }}
+        to {{ transform: rotate(360deg); }}
     }}
     
     .titulo-principal {{
         font-family: 'Dancing Script', cursive;
         color: #d81b60;
-        font-size: 55px;
+        font-size: 60px;
         text-align: center;
         margin-bottom: 5px;
+        position: relative;
     }}
 
     .fecha-badge {{
@@ -56,33 +85,37 @@ st.markdown(f"""
         font-family: 'Quicksand', sans-serif;
         font-weight: bold;
         text-align: center;
-        padding: 8px 25px;
+        padding: 10px 30px;
         border-radius: 50px;
         display: block;
         margin: 0 auto 30px auto;
         width: fit-content;
         font-size: 18px;
+        position: relative;
     }}
     
     .texto-mensaje {{ 
-        font-size: 22px; 
-        color: #333; 
-        line-height: 1.7; 
+        font-size: 24px; 
+        color: #2d3436; 
+        line-height: 1.6; 
         font-family: 'Quicksand', sans-serif; 
-        text-align: justify;
+        text-align: center;
+        position: relative;
+        font-weight: 500;
     }}
     
     .firma-jhon {{ 
-        margin-top: 35px; 
+        margin-top: 40px; 
         text-align: right; 
         color: #d81b60; 
         font-family: 'Dancing Script', cursive;
-        font-size: 40px; 
+        font-size: 45px; 
+        position: relative;
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# --- LOS 30 MENSAJES (Se renuevan solos cada día) ---
+# 4. Diccionario de Mensajes (20 Abril - 19 Mayo)
 mensajes_diarios = {
     "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día también por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
     "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar donde estés.",
@@ -116,24 +149,29 @@ mensajes_diarios = {
     "19-05": "Carolina, hoy cerramos este ciclo de 30 días pensando en ti. Espero que te sientas valorada, porque tu esencia y la dedicación que le pones a tu hija te hacen única. Jhon te tiene en un concepto de admiración total."
 }
 
-# Selección del mensaje
-llave = hoy.strftime("%d-%m")
-contenido_final = mensajes_diarios.get(llave, f"Carolina, hoy {fecha_visual} te pienso y te recuerdo lo especial que eres.")
+# 5. Lógica de selección del mensaje
+llave_hoy = hoy.strftime("%d-%m")
+contenido_final = mensajes_diarios.get(llave_hoy, f"Carolina, hoy {fecha_visual} te pienso y te recuerdo lo especial que eres.")
 
-# --- RENDERIZADO ---
+# 6. Renderizado de la App
 st.markdown(f"""
     <div class="contenedor-carta">
         <div class="titulo-principal">Para Carolina</div>
         <div class="fecha-badge">{fecha_visual.upper()}</div>
         <div class="texto-mensaje">
-            {contenido_final}
+            "{contenido_final}"
         </div>
-        <div class="firma-jhon">Con mucho cariño y respeto, Jhon ✨</div>
+        <div class="firma-jhon">Con mucho cariño, Jhon ✨</div>
     </div>
     """, unsafe_allow_html=True)
 
-# --- BOTÓN ---
+# 7. Botón de Interacción con Efectos
 st.write("")
-if st.button(f"Confirmar lectura del {dia_nombre}"):
-    st.balloons()
-    st.toast(f"¡Excelente {dia_nombre}, Carolina! 🌸", icon='💖')
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    if st.button(f"💖 Confirmar lectura del {dia_nombre}"):
+        st.balloons()
+        st.snow()  # Efecto extra visual
+        st.toast(f"¡Que tengas un día maravilloso, Carolina!", icon='✨')
+
+st.markdown("<p style='text-align: center; color: white; font-size: 14px; margin-top: 50px; font-weight: bold;'>Cada día un mensaje nuevo para ti.</p>", unsafe_allow_html=True)
