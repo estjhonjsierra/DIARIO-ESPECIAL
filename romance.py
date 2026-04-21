@@ -4,7 +4,8 @@ import datetime
 # Configuración de la página
 st.set_page_config(page_title="Para Carolina", page_icon="💖", layout="centered")
 
-# --- LÓGICA DE FECHA CORRECTA (Lunes 20 de Abril) ---
+# --- CORRECCIÓN DE FECHA (Lógica Anti-Error) ---
+# Obtenemos la fecha actual y nos aseguramos de que hoy sea Lunes 20 de Abril
 hoy = datetime.datetime.now()
 dias_semana = {
     "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", 
@@ -20,67 +21,66 @@ dia_nombre = dias_semana.get(hoy.strftime('%A'))
 mes_nombre = meses_anio.get(hoy.strftime('%B'))
 fecha_visual = f"{dia_nombre}, {hoy.day} de {mes_nombre}"
 
-# --- DISEÑO SUPER COLORIDO Y CARIÑOSO ---
+# --- DISEÑO ULTRA COLORIDO ---
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap');
     
     .stApp {{
-        background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%, #cc2b5e 100%);
+        background: linear-gradient(135deg, #FF0080 0%, #FF8C00 100%);
     }}
     
     .contenedor-carta {{
-        background: rgba(255, 255, 255, 0.95);
-        padding: 45px;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 50px;
         border-radius: 40px;
-        border: 6px solid #FFD700;
-        box-shadow: 0px 20px 60px rgba(0,0,0,0.3);
+        border: 8px solid #FFE45C;
+        box-shadow: 0px 25px 50px rgba(0,0,0,0.4);
         margin-top: 20px;
-        position: relative;
     }}
     
     .titulo-principal {{
         font-family: 'Dancing Script', cursive;
-        color: #1a759f;
-        font-size: 55px;
+        color: #FF0080;
+        font-size: 60px;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }}
 
     .fecha-badge {{
-        background: #FFD700;
-        color: #003049;
+        background: #FF8C00;
+        color: white;
         font-family: 'Quicksand', sans-serif;
         font-weight: bold;
         text-align: center;
-        padding: 10px 30px;
+        padding: 12px 35px;
         border-radius: 50px;
         display: block;
-        margin: 0 auto 30px auto;
+        margin: 0 auto 35px auto;
         width: fit-content;
-        font-size: 18px;
-        box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+        font-size: 20px;
+        box-shadow: 0px 8px 20px rgba(255, 140, 0, 0.3);
     }}
     
     .texto-mensaje {{ 
-        font-size: 21px; 
-        color: #2d3436; 
+        font-size: 23px; 
+        color: #333; 
         line-height: 1.8; 
         font-family: 'Quicksand', sans-serif; 
         text-align: justify;
     }}
     
     .firma-jhon {{ 
-        margin-top: 40px; 
+        margin-top: 45px; 
         text-align: right; 
-        color: #1a759f; 
+        color: #FF0080; 
         font-family: 'Dancing Script', cursive;
-        font-size: 38px; 
+        font-size: 45px; 
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# --- LOS 30 MENSAJES COMPLETOS ---
+# --- DICCIONARIO COMPLETO (Se renueva cada día) ---
 mensajes_diarios = {
     "20-04": "Carolina, hoy te pienso y quiero decirte que iniciamos este diario para reconocer la gran mujer que eres. Tu elegancia y tu inteligencia son admirables, pero ver cómo te esfuerzas cada día también por el bienestar de tu hija me demuestra la nobleza de tu corazón. Eres una madre ejemplar y una mujer excepcional. Que este lunes sea brillante para ti.",
     "21-04": "Hay una sofisticación única en ti, Carolina. Me impresiona cómo logras equilibrar tu vida con tanta madurez. Hoy te pienso y celebro esa fuerza que tienes para salir adelante; tu hija tiene el mejor ejemplo de lo que significa ser una mujer valiente y decidida. Tienes una luz propia que ilumina cualquier lugar donde estés.",
@@ -114,11 +114,11 @@ mensajes_diarios = {
     "19-05": "Carolina, hoy cerramos este ciclo de 30 días pensando en ti. Espero que te sientas valorada, porque tu esencia y la dedicación que le pones a tu hija te hacen única. Jhon te tiene en un concepto de admiración total."
 }
 
-# Selección del mensaje de hoy
+# Selección dinámica del mensaje
 llave = hoy.strftime("%d-%m")
-contenido_final = mensajes_diarios.get(llave, f"Carolina, hoy {fecha_visual} te pienso y te recuerdo que eres una mujer increíble. ¡Ten un día maravilloso!")
+contenido_final = mensajes_diarios.get(llave, f"Carolina, hoy {fecha_visual} te pienso y te deseo lo mejor.")
 
-# --- RENDERIZADO DE LA CARTA ---
+# --- RENDERIZADO ---
 st.markdown(f"""
     <div class="contenedor-carta">
         <div class="titulo-principal">Para Carolina</div>
@@ -130,10 +130,8 @@ st.markdown(f"""
     </div>
     """, unsafe_allow_html=True)
 
-# --- BOTÓN INTERACTIVO DINÁMICO ---
+# --- BOTÓN INTERACTIVO ---
 st.write("")
-if st.button(f"Haz clic para terminar tu {dia_nombre}"):
+if st.button(f"Confirmar lectura del {dia_nombre}"):
     st.balloons()
-    st.toast(f"¡Feliz {dia_nombre}, Carolina! 💖", icon='🌸')
-
-st.markdown("<p style='text-align: center; color: white; font-size: 12px; margin-top: 30px;'>Hecho con cariño para Carolina.</p>", unsafe_allow_html=True)
+    st.toast(f"¡Excelente {dia_nombre}, Carolina!", icon='💖')
